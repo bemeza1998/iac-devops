@@ -37,4 +37,9 @@ stages:
         script: |
           terraform plan
           terraform apply -auto-approve
+      env:
+        ARM_CLIENT_ID: $(DEV_DEVOPS_TEST_INFRA_CL_ID)
+        ARM_CLIENT_SECRET: $(DEV_DEVOPS_TEST_INFRA_SEC)
+        ARM_TENANT_ID: $(DEV_DEVOPS_TEST_INFRA_TENANT)
+        ARM_SUBSCRIPTION_ID: $(DEV_DEVOPS_TEST_INFRA_SUSC)
       displayName: Terraform plan & apply
