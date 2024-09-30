@@ -1,11 +1,3 @@
-# module "example" {
-#   source  = "./1_resource_group"  # Ruta al directorio del módulo
-
-#   prefix         = "dev"
-#   resource_group = "rg-test"
-#   tags = {"test":"testd"}
-# }
-
 resource "azurerm_resource_group" "prod-devopst-rg" {
   name     = "proddevopstrg"
   location = "West US 2"
@@ -25,16 +17,7 @@ resource "azurerm_storage_container" "prod-devopst-sa-cont" {
   storage_account_name  = azurerm_storage_account.prod-devopst-sa.name
   container_access_type = "private"
 }
-#----------------------------------
 
-# resource "azurerm_container_registry" "acr" {
-#   name                = "proddevopstacr"
-#   resource_group_name      = azurerm_resource_group.prod-devopst-rg.name
-#   location                 = azurerm_resource_group.prod-devopst-rg.location
-#   sku                 = "Basic"
-# }
-
-#----------------------------------
 resource "azurerm_service_plan" "prod-devopst-servp" {
   name                = "proddevopstservp"
   resource_group_name = azurerm_resource_group.prod-devopst-rg.name

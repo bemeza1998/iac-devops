@@ -4,6 +4,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables: 
+- group: DEV_DEVOPS_TEST_INFRA
+
 stages:
 - stage: Plan
   displayName: 'Terraform Plan'
@@ -14,4 +17,24 @@ stages:
     - task: TerraformInstaller@0
       inputs:
         terraformVersion: 'latest'
+      displayName: Install Terraform
 
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          terraform init 
+      env:
+        ARM_CLIENT_ID: $(DEV_DEVOPS_TEST_INFRA_CL_ID)
+        ARM_CLIENT_SECRET: $(DEV_DEVOPS_TEST_INFRA_SEC)
+        ARM_TENANT_ID: $(DEV_DEVOPS_TEST_INFRA_TENANT)
+        ARM_SUBSCRIPTION_ID: $(DEV_DEVOPS_TEST_INFRA_SUSC)
+      displayName: Terraform init 
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          terraform plan
+          terraform apply -auto-approve
+      displayName: Terraform plan & apply
