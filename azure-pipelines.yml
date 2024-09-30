@@ -1,5 +1,5 @@
 trigger:
-- main
+- feature/develop
 
 pool:
   vmImage: 'ubuntu-latest'
