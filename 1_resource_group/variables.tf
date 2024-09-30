@@ -1,6 +1,6 @@
 variable "resource_group" {
   description = "(Required) Resource group to create"
-  type        = map(string)
+  type        = string
   nullable = false
 }
 
