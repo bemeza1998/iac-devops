@@ -57,7 +57,7 @@ resource "azurerm_linux_web_app" "prod-devopst-appserv" {
       docker_image_name = "ryandf1998/base-image:latest"
       docker_registry_url = "https://index.docker.io"
       docker_registry_username = "ryandf1198"
-      docker_registry_password = ""
+      docker_registry_password = "$(DEV_DEVOPS_TEST_INFRA_PASS)"
     }
   }
 }
