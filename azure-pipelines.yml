@@ -42,28 +42,28 @@ jobs:
       targetType: 'inline'
       script: |
         terraform init
-        terraform plan -var="env_code=$(ENV)" -var="project=$(NAME)" 
-        terraform apply -var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
+        terraform plan -out=tfplan -var="env_code=$(ENV)" -var="project=$(NAME)" 
+    # terraform apply -var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
     env:
       ARM_CLIENT_ID: $(DEVOPS_TEST_INFRA_CL_ID)
       ARM_CLIENT_SECRET: $(DEVOPS_TEST_INFRA_SEC)
       ARM_TENANT_ID: $(DEVOPS_TEST_INFRA_TENANT)
       ARM_SUBSCRIPTION_ID: $(DEVOPS_TEST_INFRA_SUSC)
 
-# - job: DeployInfraestructure
-#   displayName: 'Deploy Infraestructure'
-#   dependsOn: 'SettingInfraestructure'
-#   steps:
-#   - task: Bash@3
-#     displayName: Terraform plan & apply
-#       - 'Terraform_Plan'
-#     inputs:
-#       targetType: 'inline'
-#       script: |
-#         terraform plan -var="env_code=$(ENV)" -var="project=$(NAME)" 
-#         terraform apply -var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
-#     env:
-#       ARM_CLIENT_ID: $(DEVOPS_TEST_INFRA_CL_ID)
-#       ARM_CLIENT_SECRET: $(DEVOPS_TEST_INFRA_SEC)
-#       ARM_TENANT_ID: $(DEVOPS_TEST_INFRA_TENANT)
-#       ARM_SUBSCRIPTION_ID: $(DEVOPS_TEST_INFRA_SUSC)
+- job: DeployInfraestructure
+  displayName: 'Deploy Infraestructure'
+  dependsOn: 'SettingInfraestructure'
+  steps:
+  - task: Bash@3
+    displayName: Terraform plan & apply
+      - 'Terraform_Plan'
+    inputs:
+      targetType: 'inline'
+      script: |
+        terraform apply -input=false tfplan -var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
+# terraform plan -var="env_code=$(ENV)" -var="project=$(NAME)" 
+    env:
+      ARM_CLIENT_ID: $(DEVOPS_TEST_INFRA_CL_ID)
+      ARM_CLIENT_SECRET: $(DEVOPS_TEST_INFRA_SEC)
+      ARM_TENANT_ID: $(DEVOPS_TEST_INFRA_TENANT)
+      ARM_SUBSCRIPTION_ID: $(DEVOPS_TEST_INFRA_SUSC)
