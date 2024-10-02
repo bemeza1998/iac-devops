@@ -36,11 +36,11 @@ resource "azurerm_linux_web_app" "appserv" {
   service_plan_id     = azurerm_service_plan.servp.id
 
   site_config {
-    # application_stack {
-    #   docker_image_name        = "$(DEVOPS_TEST_INFRA_USER)/base-image:latest"
-    #   docker_registry_url      = "https://index.docker.io"
-    #   docker_registry_username = "$(DEVOPS_TEST_INFRA_USER)"
-    #   docker_registry_password = "$(DEVOPS_TEST_INFRA_PASS)"
-    # }
+    application_stack {
+      docker_image_name        = "$(DEVOPS_TEST_INFRA_USER)/base-image:latest"
+      docker_registry_url      = "https://index.docker.io"
+      docker_registry_username = "$(DEVOPS_TEST_INFRA_USER)"
+      docker_registry_password = "$(DEVOPS_TEST_INFRA_PASS)"
+    }
   }
 }

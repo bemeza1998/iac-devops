@@ -31,7 +31,7 @@ jobs:
       ScriptType: InlineScript
       azurePowerShellVersion: Latest
       Inline: |
-        Set-Content -Path "./providers.tf" -Value (Get-Content -Path "./providers.tf" | ForEach-Object { $_ -replace '\$\(ENV\)', '$(ENV)' -replace '\$\(NAME\)', '$(NAME)' })
+        Set-Content -Path "./providers.tf" -Value (Get-Content -Path "./providers.tf" | ForEach-Object { $_ -replace '\$\(ENV\)', '$(ENV)' -replace '\$\(NAME\)', '$(NAME)' -replace '\$\(DEVOPS_TEST_INFRA_USER\)', '$(DEVOPS_TEST_INFRA_USER) -replace '\$\(DEVOPS_TEST_INFRA_PASS\)', '$(DEVOPS_TEST_INFRA_PASS) })
 
   - task: Bash@3
     displayName: Deploy with Terraform
