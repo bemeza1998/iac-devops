@@ -32,9 +32,7 @@ jobs:
       azurePowerShellVersion: Latest
       Inline: |
         Set-Content -Path "./providers.tf"   
-          -Value (Get-Content -Path "./providers.tf" | ForEach-Object 
-          { $_ -replace '\$\(ENV\)', '$(ENV)' 
-          -replace '\$\(NAME\)', '$(NAME)' })
+          -Value (Get-Content -Path "./providers.tf" | ForEach-Object { $_ -replace '\$\(ENV\)', '$(ENV)' -replace '\$\(NAME\)', '$(NAME)' })
 
   - task: Bash@3
     displayName: Deploy with Terraform
