@@ -11,7 +11,7 @@ variables:
   - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/feature/') }}:
     - group: DEV_DEVOPS_TEST_INFRA
   - name: branch
-    value: variables['Build.SourceBranch']
+    value: ${{ variables['Build.SourceBranch'] }}
 
 
 
