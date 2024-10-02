@@ -24,6 +24,18 @@ jobs:
     inputs:
       terraformVersion: '1.9.6'
 
+  - task: AzurePowerShell@5
+    displayName: 'Replace property values'
+    inputs:
+      azureSubscription: DEVOPS_TEST_SERVICE_CONNECTION
+      ScriptType: InlineScript
+      azurePowerShellVersion: Latest
+      Inline: |
+        Set-Content -Path "./providers.tf"   
+          -Value (Get-Content -Path "./providers.tf" | ForEach-Object 
+          { $_ -replace '\$\(ENV\)', '$(ENV)' 
+          -replace '\$\(NAME\)', '$(NAME)' })
+
   - task: Bash@3
     displayName: Deploy with Terraform
     inputs:
