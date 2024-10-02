@@ -1,0 +1,45 @@
+trigger:
+  - main
+  - feature/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+    - group: PROD_DEVOPS_TEST_INFRA
+  - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/') }}:
+    - group: DEV_DEVOPS_TEST_INFRA
+
+jobs:
+- job: DeployInfraestructure
+  displayName: 'Deploy Infraestructure'
+  steps:
+  - task: TerraformInstaller@0
+    displayName: Install Terraform
+    inputs:
+      terraformVersion: '1.9.6'
+
+  - task: AzurePowerShell@5
+    displayName: 'Replace property values'
+    inputs:
+      azureSubscription: DEVOPS_TEST_SERVICE_CONNECTION
+      ScriptType: InlineScript
+      azurePowerShellVersion: Latest
+      Inline: |
+        Set-Content -Path "./providers.tf" -Value (Get-Content -Path "./providers.tf" | ForEach-Object { $_ -replace '\$\(ENV\)', '$(ENV)' -replace '\$\(NAME\)', '$(NAME)' })
+        Set-Content -Path "./main.tf" -Value (Get-Content -Path "./main.tf" | ForEach-Object { $_ -replace '\$\(DEVOPS_TEST_INFRA_USER\)', '$(DEVOPS_TEST_INFRA_USER)' -replace '\$\(DEVOPS_TEST_INFRA_PASS\)', '$(DEVOPS_TEST_INFRA_PASS)' })
+
+  - task: Bash@3
+    displayName: Deploy with Terraform
+    inputs:
+      targetType: 'inline'
+      script: |
+        terraform init
+        terraform plan -var="env_code=$(ENV)" -var="project=$(NAME)" 
+        terraform apply -var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
+    env:
+      ARM_CLIENT_ID: $(DEVOPS_TEST_INFRA_CL_ID)
+      ARM_CLIENT_SECRET: $(DEVOPS_TEST_INFRA_SEC)
+      ARM_TENANT_ID: $(DEVOPS_TEST_INFRA_TENANT)
+      ARM_SUBSCRIPTION_ID: $(DEVOPS_TEST_INFRA_SUSC)
