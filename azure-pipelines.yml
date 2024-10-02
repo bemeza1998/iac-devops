@@ -10,10 +10,6 @@ variables:
     - group: PROD_DEVOPS_TEST_INFRA
   - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/') }}:
     - group: DEV_DEVOPS_TEST_INFRA
-  - name: branch
-    value: ${{ variables['Build.SourceBranch'] }}
-
-
 
 jobs:
 - job: DeployInfraestructure
