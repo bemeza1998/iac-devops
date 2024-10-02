@@ -59,7 +59,7 @@ jobs:
       targetType: 'inline'
       script: |
         terraform plan -var="env_code=$(ENV)" -var="project=$(NAME)" 
-        terraform apply var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
+        terraform apply -var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
     env:
       ARM_CLIENT_ID: $(DEVOPS_TEST_INFRA_CL_ID)
       ARM_CLIENT_SECRET: $(DEVOPS_TEST_INFRA_SEC)
