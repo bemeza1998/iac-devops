@@ -40,7 +40,7 @@ resource "azurerm_storage_container" "sa-cont" {
 #       docker_image_name        = "$(DEVOPS_TEST_INFRA_USER)/base-image:latest"
 #       docker_registry_url      = "https://index.docker.io"
 #       docker_registry_username = "$(DEVOPS_TEST_INFRA_USER)"
-#       docker_registry_password = "$(DEV_DEVOPS_TEST_INFRA_PASS)"
+#       docker_registry_password = "$(DEVOPS_TEST_INFRA_PASS)"
 #     }
 #   }
 # }

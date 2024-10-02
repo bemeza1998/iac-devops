@@ -28,6 +28,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
+        echo $(variables['Build.SourceBranchName'])
         echo $(ENV)
         echo "test***"
         export ARM_CLIENT_ID="$(DEVOPS_TEST_INFRA_CL_ID)"
@@ -42,11 +43,6 @@ jobs:
       script: |
         terraform init 
         terraform plan -var="env_code=$(ENV)" -var="project=$(NAME)" 
-    env:
-      ARM_CLIENT_ID: $(DEV_DEVOPS_TEST_INFRA_CL_ID)
-      ARM_CLIENT_SECRET: $(DEV_DEVOPS_TEST_INFRA_SEC)
-      ARM_TENANT_ID: $(DEV_DEVOPS_TEST_INFRA_TENANT)
-      ARM_SUBSCRIPTION_ID: $(DEV_DEVOPS_TEST_INFRA_SUSC)
 
 - job: DeployInfraestructure
   displayName: 'Deploy Infraestructure'
@@ -59,8 +55,3 @@ jobs:
       targetType: 'inline'
       script: |
         terraform apply -auto-approve
-    env:
-      ARM_CLIENT_ID: $(DEV_DEVOPS_TEST_INFRA_CL_ID)
-      ARM_CLIENT_SECRET: $(DEV_DEVOPS_TEST_INFRA_SEC)
-      ARM_TENANT_ID: $(DEV_DEVOPS_TEST_INFRA_TENANT)
-      ARM_SUBSCRIPTION_ID: $(DEV_DEVOPS_TEST_INFRA_SUSC)
