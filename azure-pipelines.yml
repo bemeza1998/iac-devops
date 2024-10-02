@@ -1,14 +1,14 @@
 trigger:
-  - feature/*
   - main
+  - feature/*
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+  - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     - group: PROD_DEVOPS_TEST_INFRA
-  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/feature/develop') }}:
+  - ${{ if startsWith(variables['Build.SourceBranchName'], 'feature/') }}:
     - group: DEV_DEVOPS_TEST_INFRA
   - name: branch
     value: ${{ variables['Build.SourceBranch'] }}
