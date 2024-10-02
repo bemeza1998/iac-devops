@@ -6,9 +6,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - ${{ if eq(variables['Build.SourceBranch'], 'main') }}:
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     - group: PROD_DEVOPS_TEST_INFRA
-  - ${{ if eq(variables['Build.SourceBranch'], 'feature/') }}:
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/feature/') }}:
     - group: DEV_DEVOPS_TEST_INFRA
 
 jobs:
