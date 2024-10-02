@@ -6,12 +6,12 @@ terraform {
     }
   }
 
-  # backend "azurerm" {
-  #     resource_group_name  = "${var.env_code}${var.project}rg"
-  #     storage_account_name = "${var.env_code}${var.project}sa"
-  #     container_name       = "${var.env_code}${var.project}sacont"
-  #     key                  = "${var.env_code}-${var.project}-terraform.tfstate"
-  # }
+  backend "azurerm" {
+      resource_group_name  = "$(ENV)$(NAME)rg"
+      storage_account_name = "$(ENV)$(NAME)sa"
+      container_name       = "$(ENV)$(NAME)sacont"
+      key                  = "terraform.tfstate"
+  }
 }
 
 provider "azurerm" {

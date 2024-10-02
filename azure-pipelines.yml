@@ -6,9 +6,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     - group: PROD_DEVOPS_TEST_INFRA
-  - ${{ if startsWith(variables['Build.SourceBranchName'], 'feature/') }}:
+  - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/') }}:
     - group: DEV_DEVOPS_TEST_INFRA
   - name: branch
     value: ${{ variables['Build.SourceBranch'] }}
@@ -29,7 +29,6 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        echo $(branch)
         terraform init
         terraform plan -var="env_code=$(ENV)" -var="project=$(NAME)" 
         terraform apply -var="env_code=$(ENV)" -var="project=$(NAME)" -auto-approve
