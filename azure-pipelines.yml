@@ -5,11 +5,14 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+# variables:
+#   - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+#     - group: PROD_DEVOPS_TEST_INFRA
+#   - ${{ if eq(variables['Build.SourceBranchName'], 'feature/') }}:
+#     - group: DEV_DEVOPS_TEST_INFRA
+
 variables:
-  - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
-    - group: PROD_DEVOPS_TEST_INFRA
-  - ${{ if eq(variables['Build.SourceBranchName'], 'feature/') }}:
-    - group: DEV_DEVOPS_TEST_INFRA
+- group: DEV_DEVOPS_TEST_INFRA
 
 jobs:
 - job: SettingInfraestructure
@@ -20,19 +23,17 @@ jobs:
     inputs:
       terraformVersion: '1.9.6'
 
-  # - task: Bash@3
-  #   displayName: Setting enviroment variables
-  #   inputs:
-  #     targetType: 'inline'
-  #     script: |
-  #       echo $(ENV)
-  #       echo "test***"
-  #       export ARM_CLIENT_ID="$(DEVOPS_TEST_INFRA_CL_ID)"
-  #       export ARM_CLIENT_SECRET="$(DEVOPS_TEST_INFRA_SEC)"
-  #       export ARM_TENANT_ID="$(DEVOPS_TEST_INFRA_TENANT)"
-  #       export ARM_SUBSCRIPTION_ID="$(DEVOPS_TEST_INFRA_SUSC)"
-  #   env:
-  #     ARM_CLIENT_SECRET: $(DEVOPS_TEST_INFRA_SEC)
+  - task: Bash@3
+    displayName: Setting enviroment variables
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo $(ENV)
+        echo "test***"
+        export ARM_CLIENT_ID="$(DEVOPS_TEST_INFRA_CL_ID)"
+        export ARM_CLIENT_SECRET="$(DEVOPS_TEST_INFRA_SEC)"
+        export ARM_TENANT_ID="$(DEVOPS_TEST_INFRA_TENANT)"
+        export ARM_SUBSCRIPTION_ID="$(DEVOPS_TEST_INFRA_SUSC)"
 
   - task: Bash@3
     displayName: Terraform init 
