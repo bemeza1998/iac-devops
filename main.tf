@@ -5,8 +5,8 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azurerm_storage_account" "sa" {
   name                     = "${var.env_code}${var.project}sa"
-  resource_group_name      = azurerm_resource_group.prod-devopst-rg.name
-  location                 = azurerm_resource_group.prod-devopst-rg.location
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
@@ -14,14 +14,14 @@ resource "azurerm_storage_account" "sa" {
 
 resource "azurerm_storage_container" "sa-cont" {
   name                  = "${var.env_code}${var.project}sacont"
-  storage_account_name  = azurerm_storage_account.prod-devopst-sa.name
+  storage_account_name  = azurerm_storage_account.sa.name
   container_access_type = "private"
 }
 
 # resource "azurerm_service_plan" "servp" {
 #   name                = "${var.env_code}${var.project}servp"
-#   resource_group_name = azurerm_resource_group.prod-devopst-rg.name
-#   location            = azurerm_resource_group.prod-devopst-rg.location
+#   resource_group_name = azurerm_resource_group.rg.name
+#   location            = azurerm_resource_group.rg.location
 
 #   os_type             = "Linux"
 #   sku_name            = "B1"
@@ -31,9 +31,9 @@ resource "azurerm_storage_container" "sa-cont" {
 
 # resource "azurerm_linux_web_app" "appserv" {
 #   name                = "${var.env_code}${var.project}appserv"
-#   resource_group_name = azurerm_resource_group.prod-devopst-rg.name
-#   location            = azurerm_resource_group.prod-devopst-rg.location
-#   service_plan_id     = azurerm_service_plan.prod-devopst-servp.id
+#   resource_group_name = azurerm_resource_group.rg.name
+#   location            = azurerm_resource_group.rg.location
+#   service_plan_id     = azurerm_service_plan.servp.id
 
 #   site_config {
 #     application_stack {
